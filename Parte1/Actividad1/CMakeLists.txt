@@ -7,7 +7,9 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 add_executable(Actividad1 main.cpp
     Particula.h
-    Obstaculo.h)
+    Obstaculo.h
+    Simulacion.h
+    Simulacion.cpp)
 
 include(GNUInstallDirs)
 install(TARGETS Actividad1
