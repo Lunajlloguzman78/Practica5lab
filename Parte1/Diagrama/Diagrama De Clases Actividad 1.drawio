@@ -1,0 +1,66 @@
+<mxfile host="app.diagrams.net">
+  <diagram name="Actividad 1 - UML" id="7yMC5UnqXlSCdRXBoT8v">
+    <mxGraphModel dx="2204" dy="1036" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="fsiQnuciNYjJNxbrfdXB-1" parent="1" style="text;html=0;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=22;fontStyle=1;strokeColor=none;fillColor=none;" value="DIAGRAMA DE CLASES — ACTIVIDAD 1" vertex="1">
+          <mxGeometry height="35" width="540" x="480" y="28" as="geometry" />
+        </mxCell>
+        <mxCell id="fsiQnuciNYjJNxbrfdXB-2" parent="1" style="rounded=0;whiteSpace=wrap;html=0;strokeColor=#242424;fillColor=#FFFFFF;fontColor=#111111;fontSize=18;fontStyle=1;align=center;verticalAlign=middle;fillColor=#F2F2F2;" value="Simulacion" vertex="1">
+          <mxGeometry height="42" width="640" x="440" y="110" as="geometry" />
+        </mxCell>
+        <mxCell id="fsiQnuciNYjJNxbrfdXB-3" parent="1" style="rounded=0;whiteSpace=wrap;html=0;strokeColor=#242424;fillColor=#FFFFFF;fontColor=#111111;fontSize=14;align=left;verticalAlign=top;spacingLeft=14;spacingTop=12;whiteSpace=wrap;overflow=hidden;" value="- ancho: double&#xa;- alto: double&#xa;- restitucion: double&#xa;- tiempo: double&#xa;- particulas: vector&lt;Particula&gt;&#xa;- obstaculos: vector&lt;Obstaculo&gt;&#xa;- posiciones: ofstream&#xa;- colisiones: ofstream&#xa;- cantidadColisiones: int" vertex="1">
+          <mxGeometry height="248" width="640" x="440" y="152" as="geometry" />
+        </mxCell>
+        <mxCell id="fsiQnuciNYjJNxbrfdXB-4" parent="1" style="rounded=0;whiteSpace=wrap;html=0;strokeColor=#242424;fillColor=#FFFFFF;fontColor=#111111;fontSize=14;align=left;verticalAlign=top;spacingLeft=14;spacingTop=12;whiteSpace=wrap;overflow=hidden;" value="+ Simulacion(ancho: double, alto: double, restitucion: double)&#xa;+ agregarParticula(p: const Particula&amp;): void&#xa;+ agregarObstaculo(o: const Obstaculo&amp;): void&#xa;+ ejecutar(duracion: double, dt: double, carpeta: string): bool&#xa;- paredes(p: Particula&amp;): void&#xa;- chocarObstaculo(p: Particula&amp;, o: const Obstaculo&amp;): void&#xa;- unirParticulas(): void&#xa;- registrar(tipo: string, a: int, b: int): void&#xa;- guardarPosiciones(): void&#xa;- crearGrafica(ruta: string): void" vertex="1">
+          <mxGeometry height="272" width="640" x="440" y="400" as="geometry" />
+        </mxCell>
+        <mxCell id="fsiQnuciNYjJNxbrfdXB-5" parent="1" style="rounded=0;whiteSpace=wrap;html=0;strokeColor=#242424;fillColor=#FFFFFF;fontColor=#111111;fontSize=18;fontStyle=1;align=center;verticalAlign=middle;fillColor=#F2F2F2;" value="Particula" vertex="1">
+          <mxGeometry height="42" width="355" x="45" y="240" as="geometry" />
+        </mxCell>
+        <mxCell id="fsiQnuciNYjJNxbrfdXB-6" parent="1" style="rounded=0;whiteSpace=wrap;html=0;strokeColor=#242424;fillColor=#FFFFFF;fontColor=#111111;fontSize=14;align=left;verticalAlign=top;spacingLeft=14;spacingTop=12;whiteSpace=wrap;overflow=hidden;" value="+ id: int&#xa;+ x: double&#xa;+ y: double&#xa;+ vx: double&#xa;+ vy: double&#xa;+ masa: double&#xa;+ radio: double" vertex="1">
+          <mxGeometry height="200" width="355" x="45" y="282" as="geometry" />
+        </mxCell>
+        <mxCell id="fsiQnuciNYjJNxbrfdXB-7" parent="1" style="rounded=0;whiteSpace=wrap;html=0;strokeColor=#242424;fillColor=#FFFFFF;fontColor=#111111;fontSize=14;align=left;verticalAlign=top;spacingLeft=14;spacingTop=12;whiteSpace=wrap;overflow=hidden;" value="+ Particula(id: int, x: double, y: double,&#xa;  vx: double, vy: double, masa: double, radio: double)&#xa;+ mover(dt: double): void" vertex="1">
+          <mxGeometry height="104" width="355" x="45" y="482" as="geometry" />
+        </mxCell>
+        <mxCell id="fsiQnuciNYjJNxbrfdXB-8" parent="1" style="rounded=0;whiteSpace=wrap;html=0;strokeColor=#242424;fillColor=#FFFFFF;fontColor=#111111;fontSize=18;fontStyle=1;align=center;verticalAlign=middle;fillColor=#F2F2F2;" value="Obstaculo" vertex="1">
+          <mxGeometry height="42" width="345" x="1155" y="240" as="geometry" />
+        </mxCell>
+        <mxCell id="fsiQnuciNYjJNxbrfdXB-9" parent="1" style="rounded=0;whiteSpace=wrap;html=0;strokeColor=#242424;fillColor=#FFFFFF;fontColor=#111111;fontSize=14;align=left;verticalAlign=top;spacingLeft=14;spacingTop=12;whiteSpace=wrap;overflow=hidden;" value="+ id: int&#xa;+ x: double&#xa;+ y: double&#xa;+ lado: double" vertex="1">
+          <mxGeometry height="128" width="345" x="1155" y="282" as="geometry" />
+        </mxCell>
+        <mxCell id="fsiQnuciNYjJNxbrfdXB-10" parent="1" style="rounded=0;whiteSpace=wrap;html=0;strokeColor=#242424;fillColor=#FFFFFF;fontColor=#111111;fontSize=14;align=left;verticalAlign=top;spacingLeft=14;spacingTop=12;whiteSpace=wrap;overflow=hidden;" value="+ Obstaculo(id: int, x: double, y: double, lado: double)" vertex="1">
+          <mxGeometry height="56" width="345" x="1155" y="410" as="geometry" />
+        </mxCell>
+        <mxCell id="fsiQnuciNYjJNxbrfdXB-11" edge="1" parent="1" source="fsiQnuciNYjJNxbrfdXB-3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=0;strokeColor=#222222;strokeWidth=2;startArrow=diamond;startFill=0;startSize=18;endArrow=none;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;exitX=0;exitY=0.35;entryX=1;entryY=0.5;" target="fsiQnuciNYjJNxbrfdXB-6">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="420" y="320" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="fsiQnuciNYjJNxbrfdXB-12" edge="1" parent="1" source="fsiQnuciNYjJNxbrfdXB-3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=0;strokeColor=#222222;strokeWidth=2;startArrow=diamond;startFill=0;startSize=18;endArrow=none;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;exitX=1;exitY=0.35;entryX=0;entryY=0.5;" target="fsiQnuciNYjJNxbrfdXB-9">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1100" y="320" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="fsiQnuciNYjJNxbrfdXB-13" parent="1" style="text;html=0;align=center;verticalAlign=middle;fontSize=15;fillColor=#FFFFFF;strokeColor=none;" value="1" vertex="1">
+          <mxGeometry height="22" width="38" x="412" y="264" as="geometry" />
+        </mxCell>
+        <mxCell id="fsiQnuciNYjJNxbrfdXB-14" parent="1" style="text;html=0;align=center;verticalAlign=middle;fontSize=15;fillColor=#FFFFFF;strokeColor=none;" value="0..*" vertex="1">
+          <mxGeometry height="22" width="38" x="392" y="338" as="geometry" />
+        </mxCell>
+        <mxCell id="fsiQnuciNYjJNxbrfdXB-15" parent="1" style="text;html=0;align=center;verticalAlign=middle;fontSize=15;fillColor=#FFFFFF;strokeColor=none;" value="1" vertex="1">
+          <mxGeometry height="22" width="38" x="1082" y="264" as="geometry" />
+        </mxCell>
+        <mxCell id="fsiQnuciNYjJNxbrfdXB-16" parent="1" style="text;html=0;align=center;verticalAlign=middle;fontSize=15;fillColor=#FFFFFF;strokeColor=none;" value="4" vertex="1">
+          <mxGeometry height="22" width="38" x="1110" y="350" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
