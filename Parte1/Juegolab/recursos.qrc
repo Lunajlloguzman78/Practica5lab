@@ -1,0 +1,16 @@
+<RCC>
+    <qresource prefix="/sonidos">
+        <file alias="disparo.wav">sonidos/disparo.wav</file>
+        <file alias="impacto.wav">sonidos/impacto.wav</file>
+        <file alias="muerte.wav">sonidos/muerte.wav</file>
+    </qresource>
+    <qresource prefix="/sprites">
+        <file alias="bala.png">sprites/bala.png</file>
+        <file alias="canon1.png">sprites/canon1.png</file>
+        <file alias="canon2.png">sprites/canon2.png</file>
+        <file alias="fondo.png">sprites/fondo.png</file>
+        <file alias="muro.png">sprites/muro.png</file>
+        <file alias="personaje1.png">sprites/personaje1.png</file>
+        <file alias="personaje2.png">sprites/personaje2.png</file>
+    </qresource>
+</RCC>
