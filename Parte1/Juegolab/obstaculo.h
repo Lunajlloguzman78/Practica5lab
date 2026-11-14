@@ -4,10 +4,10 @@
 class Obstaculo {
 public:
     QRectF area;
-    int dueno;
+    int dueño;
     double resistencia;
     Obstaculo(QRectF zona, int jugador, double vida);
     bool destruido() const;
-    void recibirDanio(double cantidad);
+    void recibirDaño(double cantidad);
 };
 #endif
