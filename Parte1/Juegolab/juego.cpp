@@ -74,8 +74,8 @@ void Juego::revisarObstaculos() {
         double normal = p.vx * nx + p.vy * ny;
         if (normal >= 0) continue;
         double rapidez = p.rapidez();
-        double danio = 0.20 * p.masa * rapidez;
-        o.recibirDanio(danio);
+        double daño = 0.20 * p.masa * rapidez;
+        o.recibirDaño(daño);
         ++impactos;
         const double e = 0.45;
         p.vx -= (1.0 + e) * normal * nx;
@@ -85,4 +85,41 @@ void Juego::revisarObstaculos() {
         mensaje = QString("Impacto: %1 de resistencia").arg(int(std::ceil(o.resistencia)));
         return;
     }
+}
+bool Juego::defensasDestruidas(int jugador) const {
+    for (const auto &o : obstaculos)
+        if (o.dueño == jugador && !o.destruido()) return false;
+    return true;
+}
+void Juego::revisarRepresentantes() {
+    int rival = turno == 1 ? 2 : 1;
+    double centroX = rival == 1 ? 146 : 754;
+    double centroY = 379;
+    double dx = proyectil.x - centroX;
+    double dy = proyectil.y - centroY;
+    if (dx * dx + dy * dy > 30 * 30) return;
+    if (defensasDestruidas(rival)) {
+        ganador = turno;
+        ++muertes;
+        if (rival == 1) jugador1.vivo = false;
+        else jugador2.vivo = false;
+        mensaje = QString("¡GANA EL JUGADOR %1! Pulsa Reiniciar para jugar otra vez").arg(ganador);
+        proyectil.activo = false;
+    } else {
+        ++impactos;
+        mensaje = "Primero destruye las dos defensas del rival";
+        terminarTurno();
+    }
+}
+void Juego::actualizar(double dt) {
+    if (!proyectil.activo) return;
+    tiempoDisparo += dt;
+    for (int i = 0; i < 5 && proyectil.activo; ++i) {
+        proyectil.mover(dt / 5);
+        rebotarParedes();
+        revisarObstaculos();
+        revisarRepresentantes();
+        if (!proyectil.activo) break;
+    }
+    if (tiempoDisparo > 7.0 && proyectil.activo) terminarTurno();
 }
