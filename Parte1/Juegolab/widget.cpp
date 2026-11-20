@@ -8,6 +8,17 @@
 #include <QPainter>
 #include <QFont>
 #include <QColor>
+#include <QVBoxLayout>
+#include <QHBoxLayout>
+#include <QMouseEvent>
+#include <QPen>
+#include <QBrush>
+#include <QUrl>
+#include <QSignalBlocker>
+#include <QSlider>
+#include <QPushButton>
+#include <QTimer>
+#include <cmath>
 
 using namespace std;
 
@@ -67,6 +78,155 @@ Widget::Widget(QWidget *parent)
     angulo->setEnabled(false);
     velocidad->setEnabled(false);
     posicion->setEnabled(false);
+
+    vista->viewport()->installEventFilter(this);
+
+    sonidoDisparo.setSource(
+        QUrl(QStringLiteral("qrc:/sonidos/disparo.wav"))
+        );
+
+    sonidoDisparo.setVolume(0.75);
+
+    sonidoImpacto.setSource(
+        QUrl(QStringLiteral("qrc:/sonidos/impacto.wav"))
+        );
+
+    sonidoImpacto.setVolume(0.85);
+
+    sonidoMuerte.setSource(
+        QUrl(QStringLiteral("qrc:/sonidos/muerte.wav"))
+        );
+
+    sonidoMuerte.setVolume(0.9);
+
+    connect(
+        angulo,
+        &QSlider::valueChanged,
+        this,
+        [this](int n)
+        {
+            valorAngulo->setText(
+                QString("Angulo: %1°").arg(n)
+                );
+
+            (juego.turno == 1
+                 ? juego.jugador1
+                 : juego.jugador2).angulo = n;
+
+            actualizarPantalla();
+        }
+        );
+
+    connect(
+        velocidad,
+        &QSlider::valueChanged,
+        this,
+        [this](int n)
+        {
+            valorVelocidad->setText(
+                QString("Velocidad: %1").arg(n)
+                );
+
+            (juego.turno == 1
+                 ? juego.jugador1
+                 : juego.jugador2).velocidad = n;
+
+            actualizarPantalla();
+        }
+        );
+
+    connect(
+        posicion,
+        &QSlider::valueChanged,
+        this,
+        [this](int n)
+        {
+            juego.cambiarPosicion(
+                juego.turno == 1
+                    ? 40 + n
+                    : 800 + n
+                );
+
+            valorPosicion->setText(
+                QString("Posicion: %1").arg(n)
+                );
+
+            actualizarPantalla();
+        }
+        );
+
+    connect(
+        botonDisparar,
+        &QPushButton::clicked,
+        this,
+        [this]()
+        {
+            if (juego.disparar(
+                    angulo->value(),
+                    velocidad->value()
+                    ))
+            {
+                sonidoDisparo.play();
+            }
+
+            actualizarPantalla();
+        }
+        );
+
+    connect(
+        ui->reiniciar,
+        &QPushButton::clicked,
+        this,
+        [this]()
+        {
+            juego.reiniciar();
+
+            sincronizarPosicion();
+
+            actualizarPantalla();
+        }
+        );
+
+    connect(
+        &reloj,
+        &QTimer::timeout,
+        this,
+        [this]()
+        {
+            int turnoAnterior = juego.turno;
+
+            const unsigned int impactosAntes =
+                juego.impactos;
+
+            const unsigned int muertesAntes =
+                juego.muertes;
+
+            juego.actualizar(0.016);
+
+            if (juego.impactos != impactosAntes)
+            {
+                sonidoImpacto.play();
+            }
+
+            if (juego.muertes != muertesAntes)
+            {
+                sonidoMuerte.play();
+            }
+
+            if (turnoAnterior != juego.turno)
+            {
+                sincronizarPosicion();
+            }
+
+            actualizarPantalla();
+        }
+        );
+
+    reloj.start(16);
+
+    sincronizarPosicion();
+
+    actualizarPantalla();
 }
 
 Widget::~Widget()
@@ -92,12 +252,106 @@ void Widget::crearEscenario()
 
     personaje2->setPos(723, 322);
 
+    auto cargarCanon = [](
+                           const QString &rutaPrincipal,
+                           const QString &rutaAlternativa,
+                           bool invertido
+                           )
+    {
+        QPixmap imagen(rutaPrincipal);
+
+        if (imagen.isNull())
+        {
+            imagen.load(rutaAlternativa);
+        }
+
+        if (imagen.isNull())
+        {
+            imagen = QPixmap(112, 80);
+            imagen.fill(Qt::transparent);
+
+            QPainter painter(&imagen);
+
+            painter.setRenderHint(
+                QPainter::Antialiasing,
+                true
+                );
+
+            painter.setPen(
+                QPen(QColor("#202a38"), 3)
+                );
+
+            painter.setBrush(
+                QBrush(QColor("#657489"))
+                );
+
+            if (invertido)
+            {
+                painter.drawRoundedRect(
+                    8, 27, 75, 18, 6, 6
+                    );
+            }
+            else
+            {
+                painter.drawRoundedRect(
+                    29, 27, 75, 18, 6, 6
+                    );
+            }
+
+            painter.setBrush(
+                QBrush(QColor("#414d61"))
+                );
+
+            painter.drawRoundedRect(
+                32, 38, 48, 22, 7, 7
+                );
+
+            painter.setBrush(
+                QBrush(QColor("#273342"))
+                );
+
+            painter.drawEllipse(
+                28, 51, 25, 25
+                );
+
+            painter.drawEllipse(
+                62, 51, 25, 25
+                );
+
+            painter.setBrush(
+                QBrush(QColor("#b8c4d2"))
+                );
+
+            painter.drawEllipse(
+                36, 59, 9, 9
+                );
+
+            painter.drawEllipse(
+                70, 59, 9, 9
+                );
+        }
+
+        return imagen;
+    };
+
+    QPixmap imagenCanon1 = cargarCanon(
+        QStringLiteral(":/sprites/canon1.png"),
+        QStringLiteral(":/sprites/canon1.png"),
+        false
+        );
+
+    QPixmap imagenCanon2 = cargarCanon(
+        QStringLiteral(":/sprites/canon2.png"),
+        QStringLiteral(":/sprites/canon2.png"),
+        true
+        );
+
     cañon1 = escena->addPixmap(
-        QPixmap(":/sprites/cañon1.png")
+        imagenCanon1
         );
 
     cañon2 = escena->addPixmap(
-        QPixmap(":/sprites/cañon2.png")
+        imagenCanon2
         );
 
     cañon1->setPos(
@@ -107,6 +361,12 @@ void Widget::crearEscenario()
     cañon2->setPos(
         juego.posicion2 - 56, 337
         );
+
+    cañon1->setZValue(10);
+    cañon2->setZValue(10);
+
+    cañon1->setVisible(true);
+    cañon2->setVisible(true);
 
     for (const auto &o : juego.obstaculos)
     {
@@ -149,6 +409,22 @@ void Widget::crearEscenario()
         );
 
     bala->hide();
+
+    for (int i = 0; i < 32; ++i)
+    {
+        auto *punto = escena->addEllipse(
+            0,
+            0,
+            5,
+            5,
+            QPen(Qt::NoPen),
+            QBrush(
+                QColor(255, 248, 205, 195)
+                )
+            );
+
+        puntos.push_back(punto);
+    }
 }
 
 void Widget::sincronizarPosicion()
